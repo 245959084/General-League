@@ -80,6 +80,8 @@ teams' deaths varies even if the teams get the same number of kills.
 
 The last analysis we are interested in is the average number of deaths on blue side and red side in different leagues.
 `print(table[['AC', 'AL', 'CT', 'EM', 'PRMP','WLDs']].head().to_markdown(index=False))`
+
+
 |      AC |      AL |      CT |      EM |    PRMP |    WLDs |
 |--------:|--------:|--------:|--------:|--------:|--------:|
 | 14.5714 | 15.9804 | 17.359  | 15.2281 | 20.0075 | 12.5379 |
