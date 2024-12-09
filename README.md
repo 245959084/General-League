@@ -82,7 +82,6 @@ The last analysis we are interested in is the average number of deaths on blue s
 
 `print(table[['AC', 'AL', 'CT', 'EM', 'PRMP','WLDs']].head().to_markdown(index=False))`
 
-
 |      AC |      AL |      CT |      EM |    PRMP |    WLDs |
 |--------:|--------:|--------:|--------:|--------:|--------:|
 | 14.5714 | 15.9804 | 17.359  | 15.2281 | 20.0075 | 12.5379 |
