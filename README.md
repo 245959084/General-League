@@ -41,9 +41,11 @@ Above, will be everything we will be investing through this research
 
 ## Data Cleaning and Exploratory Data Analysis
 `clean_1 = df[['league', 'side', 'position', 'playername', 'teamname', 'gamelength', 'kills', 'deaths', 'dpm', 'damagetakenperminute', 'wpm', 'wardskilled', 'damagemitigatedperminute']].fillna(np.nan)`
+
 I take all of the columns I need to continue my reseach, and fill all empty values with na to indicate that the value is missing.
 
 `clean_t = clean_1[clean_1['position'] == 'team']`
+
 This dataframe contains information for teams only. I would encounter problems if I included both players and teams because they share the same values for some columns, while other columns contain stats that vary significantly. To ensure a more precise analysis, I will focus solely on teams, which represent the overall stats for players on each team.
 
 First let's look at the stats for dpm
@@ -82,13 +84,144 @@ While I was looking through the columns, I found out that there is deterministic
 damageitigatedperminute column. I found out damageitigatedperminute has a missing value if
 the value in league column is either LPL, LDL, MSI, Dcup, or WLDs. That tell us damageitigatedperminute is missing dependent on leagueWhich is MAR or the missingness could be done by purpose, which makes it MD.
 
+Keep moving on with missingness, we want to see if missing values in damageitigatedperminute is dependent on other 
+columns, let's use **death** columns. 
+
+**visual stat for distribution**
+Looking at the distribution of damageitigatedperminute not missing data seems to roughly skewed to the right,
+while the distribution of damageitigatedperminute is missing data seems rougly normal.
+
+Permutation test
+Null Hypothesis: The average 'deaths' when 'damage reduced per minute' is not missing is equal to the average 'deaths' when 'damage reduced per minute' is missing.
+
+Alternative Hypothesis: The average 'deaths' when 'damage reduced per minute' is not missing is not equal to the average 'deaths' when 'damage reduced per minute' is missing
+
+Test Statistic: absolute(mean of death(damage reduced per minute is not missing) - mean of death(damage reduced per minute is missing))
+
+The significant level is 0.05
+
+After the testing, the P_value(about 0.0) I get is lower than the significant level, this tells us that we reject the null hypothesis, which mean the mean of death stats vary when damageitigatedperminute is missing or not missing. This also support that
+the missingness in damageitigatedperminute is likely to be MAR dependent on deaths
+**visual stat for empirical**
+
+
+
+I also want to see if the missingness in damagemitigatedperminute is dependent on side column.
+**visual stat for distriution**
+
+Permutation test
+Null Hypothesis: The distribution of 'side' will not be different between non-missing 'reduce damage per minute' data and missing'reduce damage per minute' data.
+
+Alternative Hypothesis: The distribution of 'side' will be different between non-missing 'reduce damage per minute' data and missing'reduce damage per minute' data.
+
+Test Statistic: total variation distance between missing data and non-missing data base on side
+
+The significant level is 0.05
+
+The p_value(about 0.979) I get is significantly larger than our significiant level, so we fail to reject the null hypothesis, telling us the missingness in damagemitigatedperminute is not dependent on side column, this not MAR. But at the same time, we couldn't say the data is MCAR. Because there could be other columns that cause the value to miss.
+---
+
+
 ## Hypothesis Testing
+The central idea for this research deals with time played per game, and there are lots of factors we can use to play
+with testing. At the same time, I am a fan of pro leagues. I watch LCK, LPL, MSI, World Cup quite often. So my question is
+which league tends to have longer game length in 2024?
+
+Before I perform the testings, I personally think LCK has longer game length compare other leagues because LCK have stronger players, and stronger teams. For example, SK Telecom, is a legendary team in League of Legends, this team has won 3 world championship, regarded as the number 1 team in the world by fans of League of Legends. This team is in LCK league, and they renamed to T1, and won two more world championship recently. Another factor is that LCK's team really like to use strategies to win the game, and they like to play safe. Their playing style are not as risky as playing style in other leagues, that is why I think LCK might have the longer gamelength in 2024.
+
+The first test league vs gamelength, I will be choosing two leagues among all of the league. wLDs(World Series) and MSI(Middle Season Invitational) are consider international competitions, let's start by comparing these two leagues. Now we have two samples, I will be performing permutation to see if two leagues have same amount of gamelength per game.
+
+Null hypothesis: The average gamelength in the world is equal to the average gamelength in the MSI.
+
+Alternative hypothesis: The average gamelength in the world is longer comare to the average gamelength in the MSI
+Teams tend to player more carefully in Worlds.
+
+Test statistic: The mean of gamelength for Worlds - The mean of gamelength of MSI
+
+Significant level is set to be 0.05
+**Visual**
+
+The p value I get is around 0.0001, we reject the null hypothesis, saying that the average gamelength for worlds is not likely to be the same as the average gamelength for MSI, and it tends show that the average gamelength for the worlds is higher than the average gamelength for MSI.Connecting this result to the real world, it actually make sense, since who ever wins the world gains a world championship, it is everyone's goal. So most of people will choose to play at a slower pase to seek for chance.
+
+
+The second test is also league vs gamelength, but this time, we have LPL vs LCK. The two leagues are consider two of the most 
+competitive leagues, and most of the time, the teams from these two Leagues are fighting in the World's final. I will use permuation to compare and contrast the gamelength between these two leagues.
+
+Null hypothesis: The average gamelength in the LCk is equal to the average gamelength in the LPL.
+Alternative hypothesis: The average gamelength in the LCK is lower comare to the average gamelength in the LPL.
+
+Test statistic: The mean of gamelength for LCK - The mean of gamelength of LPL.
+
+Significant level is set to be 0.05
+
+The p value I get is around 0.19, we fail to reject the null hypothesis because the P_value we receive is high than the significant level. Saying that two leagues are likely to have the same average gamelength. This is actually little bit surprising to me, because I thought LPL is going to have lower average gamelength, because LPL players really like to have team fights, which could lead to early finish. But at the same time, it make sense beacuse both leagues are competitive.
+---
 
 ## Framing a Prediction Problem
+After discovering the missingness in the dataframe and the some relationship between columns and gamelength, **we are going to predict the gamelength of each game**. The ultimate goal of this project is to predict the gamelength.
+
+Why are we interested in predict the gamelength? 
+As the corona virus become less effective, people now spend fewer time at home, either because of their works or outdoor activities. Since people now are less willing to spend too much time on playing or watching the game than before, 
+we want to if there are any factor that can reduce the gamelength. Obviously, we cannot just unplug the internet to minimize the gamelength(Your teammate are not going to be happy), so, let's try to find those factors in the game. Since we are prediciting a numerical column, we will be using **regression**. The response variable we will be using is "gamelength". Since we are using regression to predict numerical value, we will use R^2 to see how well our model predict the gamelength.
+We don't use F1-score, since we are prediciting a numerical result. R^2 or RMSE both work, in this research, we will use R^2 to see how our model correlates with the actual gamelength.
+
+Now, choosing out features. In previous tests, we found out there is some kind of relationship between league and gamelength. But there are too many leagues(unique) in league feature, we will choose the four most viewed leagues in our model, which is World, MSI,LCK, and LPL. Next, I have kills and deaths features in my model since they are consider as important factors in the game, and the two do not have a strong correlation. I will have wpm(wards placed down per minute) feature in model since it shows a roughly positive correlation with gamelength. Other than those features, I will have three features in my model: dpm(damage dealt per minute),damagetakenperminute, wardskilled. Even though I didn't test with them in the early test, they are all consider important factors thataffect the game. I like to mention that having higher damage dealt per time doesn't neccessary mean you will have more kill. Havinghigher damagetakeperminute doesn't neccessary mean your character will more likely to die.
+
+**Features: league, kills, deaths, wpm, dpm, damagetakenperminute, wardskilled**
+**Prediciting: gamelength**
+---
 
 ## Baseline Model
+This model includes one hot encoding, applying natural log transformations to the data, and the create a linear regression model.
+The features are:
+- league: Nominal categorical variable that contains four unique values: MSI, WLDs, LCK, LPL, each stands for a league for pro-players.
+- kills: Discrete numerical variable that contains total number of kills for each team.
+- deaths: Discrete numerical variable that contains total number of deaths for each team's characters.
+- wpm: Continuous numerical variable, stands for wards(visions) placed down per minute for each team.
+- gamelength: Discrete numerical variable that contains the length of a game for each time.
+- dpm: Continuous numerical variable, stands for each team's damage dealt per minute.
+- damagetakenperminute: Continuous numerical variable, stands for each team's damage taken per minute.
+- wardskilled: Discrete numerical variable, stands for each team's total number of wards killed per game.
+
+Before the transformation, I splited my data into training set and testing set, training set contains 80 percent of data.
+
+Performed One Hot Ecoding for the only categorical value, which splited league to world, msi, lpl, lck, four columns that contains either 0 or 1. I transformed wpm with natural log to wpm to make it less important compares to other variables.
+Then I fit the transform data into the linear regression model and find data's R^2.
+
+#The R^2, which is the Coefficient of determination between the actual gamelength and predicted gamelength is about 
+**0.65771616** for seen data(training) and **0.6669366** unseen data(testing). This is a decent model for prediciting the gamelength. Knowing that fact that gamelength is a challenging value to predict, since it can be influenced by mood of players on both side, the R^2 tells me that the model perform a decent prediction on gamelength. Let's see if we can find a better prediction.
 
 ## Final Model
+In my decision for final model, I used both Linear Regression and Decision Tree Regressor, the result of Decision Tree Regressor varies by **max_depth(1 to 5)**, which is **one of hyperparameters** I have in my training, I want to find a max_depth such that it minimizes the bias and variance that can give me a low risk which gives me a high R^2. **Another hyperparameter that I have is transformation**, I have two transformations that have a little difference. This hyperparameter
+are mainly being find the difference between changes to features, both transformations are also being applied to
+#Decision Tree Regressor and linear regression. So, in total, I have (5+1)*2 = 12 models to test. The additional one comes from linear regression, so max_depth is only part of first hyperparameter, the whole first hyperparameter should be **linear regression plus decision tree regressor with max_depth from 1 to 5**.
+
+
+In the **first transformataion**, I added 'wardskilled' to the FunctionTransformer(np.log) to make it less important compares rest of features, even though vision is a factor we need to think about when prediciting the gamelength, I personally, its importance is not as significant as the other variables, so I applied log to wardskilled, I had wpm in the log transform for the same reasoning. Then, I put in rest of the **columns('kills', 'deaths', 'dpm','damagetakenperminute')** into FunctionTransformer(root) to weaken their effects on the prediction, though the weaken effect is not as strong as the np.log. There is a reason for this, due to my experience on watching the pro-games, I have never seen a game that is shorter than 15 minutes. Knowing the fact the we can see 30 kills, 20 deaths in a 25 minutes or a 40 minutes game, I weaken the importance of kills and deaths. I put into dpm and damagetakenperminute in complete out of my curiosity, to see if these
+two factors are important or not when predicting the gamelength.
+
+In the **second transformation**, most of features are the same, except that I now transform **'wardskilled' and 'wpm' with the z-score**, instead of apply np.log. This is because my friend who play jungle(a role in the game) tells that visions much important than I thought. The more competitive the match is(even match), the more wards(vision) he will likely purchase in order to win the fight(because most player need visions to plan the next move). Transforming them doesn't change the importance of two variables, it is transformed to just add some transformation on top of them. 
+The next difference is that **I didn't transformation dpm and damagetakenperminute with root** this time
+because bigger dpm and damamgetakenperminute might tell us that players encounter lots of team fights, and team fights happen often in the late game, when characters are full built(6 max items), they will be to create more damages and taken more damages. That is why I passthrough them. But at the same time, I want to see if this idea is correct by comparing this transformation with the first transform. So two transformations are being applied to all linear regression and decision tree regressor.By making those less important variables less weighted, I believe it makes my prediction better.
+
+The method I used to select hyperparameters and my overall model is **cross_val_score, 5-fold cross-validation**. Each fold, the method take 1/5 portion of transformed data, and finds its R^2. We have 5 folds per model, and we will decide which model has the best prediction by finding the model that has the highest average of 5 R^2. In my test, model that does the best in prediction is **linear regression with the second transformation**. This final model does a better prediction in both training set and testing set compare to baseline model, with **0.6603470680419258** for training set and **0.6740973819160796** for testing set. Though by the R^2 improved by around 0.005 to 0.01 for both training and testing set. The little change is due to the fact that gamelength is extreme hard to predict by just looking at the stats in the game, it also depends on the mood of players, if players on both side have equivalent skills andstrong wills to win the game, the game is more likely to longer. Unlucky, we don't have stats like that in the data. 
+
+**Visual**
 
 ## Fairness Analysis
+In the last part of this research, I want to see if the R^2 is the same for two different groups.
 
+Group X will be named as offense group, this group contains teams that have more than 13 kills per game.
+Group Y will be named as defense group, this group contains teams that have lower than or equal to 13 kills per game
+Since my final model is regression model, the evaluation metric of this analysis will be R^2
+
+Permutation
+Null hypothesis: The regression's R^2 is the same for both offense group and defense group, and any differences are due to chance.
+Alternative Hypothesis: The regression's R^2 is higher for offense group.
+
+Test statistic: Difference in R^2 (offense minus defense).
+
+The siginificant level is 0.05
+
+The p value for the test is 0.09, which higher than the significant level. I failed to reject the null hypothesis. It seems like the model has achieve R^2 parity.
+**visual**
