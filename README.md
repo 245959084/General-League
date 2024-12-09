@@ -49,22 +49,21 @@ I take all of the columns I need to continue my reseach, and fill all empty valu
 This dataframe contains information for teams only. I would encounter problems if I included both players and teams because they share the same values for some columns, while other columns contain stats that vary significantly. To ensure a more precise analysis, I will focus solely on teams, which represent the overall stats for players on each team.
 
 First let's look at the stats for dpm
-**stat**
-The median of stats is around 2500, but we can see there are lots of outliers on the right side of the graph. 
-That tell us lots of teams are performing extremely well on how to dealt tons of damage to the enemy team. I wouldn't say the 
-team has the higher damage dealt per minutes is more likely to finish the game early, but it is definitely one of the factors
-that leads to shorter game.
+<iframe src="Assets/uni_dpm.html" width=800 height=600 frameBorder=0></iframe>
+The median of stats is around 2500, with a mean little bit high than that. That mean the graph is a bit skewed to the right.
+I wouldn't say the team has the higher damage dealt per minutes is more likely to finish the game early, but it is definitely one of the factors that leads to shorter game.
 
 Next, we will look the relationship between gamelength and wpm
-**stat**
+<iframe src="Assets/bi_game_wpm.html" width=800 height=600 frameBorder=0></iframe>
 This tells us that the number of wards placed per minute has a positive correlation with the length of each game. 
 The more wards a team places down, the more likely the game will last longer. This makes sense since vision is an important 
 factor in League of Legends. If a team doesn't place wards frequently, it could indicate reckless play or facing a weak team,
 which often leads to an early finish. On the other hand, if a team places wards often, it could suggest they are playing carefully, or they are facing an evenly matched opponent, which forces the team to play more patiently.
 
 Let's look at one more scatter between kills and deaths
-**stat**
-It is pretty obviously that there isn't a strong correlation between  kills and deaths 
+<iframe src="Assets/bi_kills_dea.html" width=800 height=600 frameBorder=0></iframe>
+It is pretty obviously that there isn't a strong correlation between kills and deaths. By looking at the graph, it tells us
+teams' deaths varies even if the teams get the same number of kills.
 
 
 The last analysis we are interested in is the average number of deaths on blue side and red side in different leagues.
@@ -102,12 +101,12 @@ The significant level is 0.05
 
 After the testing, the P_value(about 0.0) I get is lower than the significant level, this tells us that we reject the null hypothesis, which mean the mean of death stats vary when damageitigatedperminute is missing or not missing. This also support that
 the missingness in damageitigatedperminute is likely to be MAR dependent on deaths
-**visual stat for empirical**
+<iframe src="Assets/empirical_dea.html" width=800 height=600 frameBorder=0></iframe>
 
 
 
 I also want to see if the missingness in damagemitigatedperminute is dependent on side column.
-**visual stat for distriution**
+<iframe src="Assets/side_bar.html" width=800 height=600 frameBorder=0></iframe>
 
 Permutation test
 Null Hypothesis: The distribution of 'side' will not be different between non-missing 'reduce damage per minute' data and missing'reduce damage per minute' data.
@@ -139,7 +138,7 @@ Teams tend to player more carefully in Worlds.
 Test statistic: The mean of gamelength for Worlds - The mean of gamelength of MSI
 
 Significant level is set to be 0.05
-**Visual**
+<iframe src="Assets/world_msi.html" width=800 height=600 frameBorder=0></iframe>
 
 The p value I get is around 0.0001, we reject the null hypothesis, saying that the average gamelength for worlds is not likely to be the same as the average gamelength for MSI, and it tends show that the average gamelength for the worlds is higher than the average gamelength for MSI.Connecting this result to the real world, it actually make sense, since who ever wins the world gains a world championship, it is everyone's goal. So most of people will choose to play at a slower pase to seek for chance.
 
@@ -206,7 +205,7 @@ because bigger dpm and damamgetakenperminute might tell us that players encounte
 
 The method I used to select hyperparameters and my overall model is **cross_val_score, 5-fold cross-validation**. Each fold, the method take 1/5 portion of transformed data, and finds its R^2. We have 5 folds per model, and we will decide which model has the best prediction by finding the model that has the highest average of 5 R^2. In my test, model that does the best in prediction is **linear regression with the second transformation**. This final model does a better prediction in both training set and testing set compare to baseline model, with **0.6603470680419258** for training set and **0.6740973819160796** for testing set. Though by the R^2 improved by around 0.005 to 0.01 for both training and testing set. The little change is due to the fact that gamelength is extreme hard to predict by just looking at the stats in the game, it also depends on the mood of players, if players on both side have equivalent skills andstrong wills to win the game, the game is more likely to longer. Unlucky, we don't have stats like that in the data. 
 
-**Visual**
+
 
 ## Fairness Analysis
 In the last part of this research, I want to see if the R^2 is the same for two different groups.
@@ -223,5 +222,5 @@ Test statistic: Difference in R^2 (offense minus defense).
 
 The siginificant level is 0.05
 
-The p value for the test is 0.09, which higher than the significant level. I failed to reject the null hypothesis. It seems like the model has achieve R^2 parity.
-**visual**
+The p value for the test is 0.377, which higher than the significant level. I failed to reject the null hypothesis. It seems like the model has achieve R^2 parity.
+<iframe src="Assets/r2_parity.html" width=800 height=600 frameBorder=0></iframe>
