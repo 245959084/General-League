@@ -86,7 +86,7 @@ the value in league column is either LPL, LDL, MSI, Dcup, or WLDs. That tell us 
 Keep moving on with missingness, we want to see if missing values in damageitigatedperminute is dependent on other 
 columns, let's use **death** columns. 
 
-<iframe src="Assets/missing_msi.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="Assets/missing.html" width=800 height=600 frameBorder=0></iframe>
 Looking at the distribution of damageitigatedperminute not missing data seems to roughly skewed to the right,
 while the distribution of damageitigatedperminute is missing data seems rougly normal.
 
