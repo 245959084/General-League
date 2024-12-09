@@ -37,7 +37,7 @@ We will be looking at these columns for the research:
 - damagemitigatedperminute: the damge a team or a player reduce with character he played.
 
 Above, will be everything we will be investing through this research
----
+
 
 ## Data Cleaning and Exploratory Data Analysis
 `clean_1 = df[['league', 'side', 'position', 'playername', 'teamname', 'gamelength', 'kills', 'deaths', 'dpm', 'damagetakenperminute', 'wpm', 'wardskilled', 'damagemitigatedperminute']].fillna(np.nan)`
@@ -69,7 +69,7 @@ teams' deaths varies even if the teams get the same number of kills.
 The last analysis we are interested in is the average number of deaths on blue side and red side in different leagues.
 **stat**
 By looking at the average number of deaths on both sides across all of the leagues, I can see that the red side tends to have a larger average number of deaths compared to the blue side. This is not surprising. In each competition, every team gets to choose whether they want the blue side or the red side. The majority of the time, teams choose the blue side due to geographic advantages, which explains why the blue side has fewer average deaths compared to the red side across the leagues.
----
+
 
 ## Assessment of Missingness
 There are two columns in my cleaned dataframe that have missing values, they are playername and damagemitigatedperminute.
@@ -118,7 +118,7 @@ Test Statistic: total variation distance between missing data and non-missing da
 The significant level is 0.05
 
 The p_value(about 0.979) I get is significantly larger than our significiant level, so we fail to reject the null hypothesis, telling us the missingness in damagemitigatedperminute is not dependent on side column, this not MAR. But at the same time, we couldn't say the data is MCAR. Because there could be other columns that cause the value to miss.
----
+
 
 
 ## Hypothesis Testing
@@ -154,7 +154,7 @@ Test statistic: The mean of gamelength for LCK - The mean of gamelength of LPL.
 Significant level is set to be 0.05
 
 The p value I get is around 0.19, we fail to reject the null hypothesis because the P_value we receive is high than the significant level. Saying that two leagues are likely to have the same average gamelength. This is actually little bit surprising to me, because I thought LPL is going to have lower average gamelength, because LPL players really like to have team fights, which could lead to early finish. But at the same time, it make sense beacuse both leagues are competitive.
----
+
 
 ## Framing a Prediction Problem
 After discovering the missingness in the dataframe and the some relationship between columns and gamelength, **we are going to predict the gamelength of each game**. The ultimate goal of this project is to predict the gamelength.
@@ -166,7 +166,8 @@ We don't use F1-score, since we are prediciting a numerical result. R^2 or RMSE 
 
 Now, choosing out features. In previous tests, we found out there is some kind of relationship between league and gamelength. But there are too many leagues(unique) in league feature, we will choose the four most viewed leagues in our model, which is World, MSI,LCK, and LPL. Next, I have kills and deaths features in my model since they are consider as important factors in the game, and the two do not have a strong correlation. I will have wpm(wards placed down per minute) feature in model since it shows a roughly positive correlation with gamelength. Other than those features, I will have three features in my model: dpm(damage dealt per minute),damagetakenperminute, wardskilled. Even though I didn't test with them in the early test, they are all consider important factors thataffect the game. I like to mention that having higher damage dealt per time doesn't neccessary mean you will have more kill. Havinghigher damagetakeperminute doesn't neccessary mean your character will more likely to die.
 
-**Features: league, kills, deaths, wpm, dpm, damagetakenperminute, wardskilled**
+**Features: league, kills, deaths, wpm, dpm, damagetakenperminute, wardskilled.**
+
 **Prediciting: gamelength**
 ---
 
