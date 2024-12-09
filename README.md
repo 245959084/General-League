@@ -86,7 +86,7 @@ the value in league column is either LPL, LDL, MSI, Dcup, or WLDs. That tell us 
 Keep moving on with missingness, we want to see if missing values in damageitigatedperminute is dependent on other 
 columns, let's use **death** columns. 
 
-**visual stat for distribution**
+<iframe src="Assets/missing_msi.html" width=800 height=600 frameBorder=0></iframe>
 Looking at the distribution of damageitigatedperminute not missing data seems to roughly skewed to the right,
 while the distribution of damageitigatedperminute is missing data seems rougly normal.
 
@@ -167,9 +167,8 @@ We don't use F1-score, since we are prediciting a numerical result. R^2 or RMSE 
 Now, choosing out features. In previous tests, we found out there is some kind of relationship between league and gamelength. But there are too many leagues(unique) in league feature, we will choose the four most viewed leagues in our model, which is World, MSI,LCK, and LPL. Next, I have kills and deaths features in my model since they are consider as important factors in the game, and the two do not have a strong correlation. I will have wpm(wards placed down per minute) feature in model since it shows a roughly positive correlation with gamelength. Other than those features, I will have three features in my model: dpm(damage dealt per minute),damagetakenperminute, wardskilled. Even though I didn't test with them in the early test, they are all consider important factors thataffect the game. I like to mention that having higher damage dealt per time doesn't neccessary mean you will have more kill. Havinghigher damagetakeperminute doesn't neccessary mean your character will more likely to die.
 
 **Features: league, kills, deaths, wpm, dpm, damagetakenperminute, wardskilled.**
+**Prediciting: gamelength.**
 
-**Prediciting: gamelength**
----
 
 ## Baseline Model
 This model includes one hot encoding, applying natural log transformations to the data, and the create a linear regression model.
