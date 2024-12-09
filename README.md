@@ -47,6 +47,18 @@ I take all of the columns I need to continue my reseach, and fill all empty valu
 `clean_t = clean_1[clean_1['position'] == 'team']`
 
 This dataframe contains information for teams only. I would encounter problems if I included both players and teams because they share the same values for some columns, while other columns contain stats that vary significantly. To ensure a more precise analysis, I will focus solely on teams, which represent the overall stats for players on each team.
+The clean dataframe look like this: `print(clean_t[['league', 'side', 'gamelength', 'kills', 'deaths', 'dpm', 'wpm', 'wardskilled', 'damagemitigatedperminute']].head().to_markdown(index=False))`
+
+| league   | side   |   gamelength |   kills |   deaths |     dpm |    wpm |   wardskilled |   damagemitigatedperminute |
+|:---------|:-------|-------------:|--------:|---------:|--------:|-------:|--------------:|---------------------------:|
+| DCup     | Blue   |         1886 |       3 |       16 | 1329.83 | 3.0859 |            59 |                        nan |
+| DCup     | Red    |         1886 |      16 |        3 | 1811.52 | 3.8812 |            49 |                        nan |
+| DCup     | Blue   |         1911 |       3 |       17 | 1708.7  | 2.763  |            47 |                        nan |
+| DCup     | Red    |         1911 |      17 |        3 | 1974.82 | 3.6421 |            56 |                        nan |
+| DCup     | Blue   |         1324 |      21 |        3 | 2747.72 | 2.719  |            35 |                        nan |
+
+
+
 
 First let's look at the stats for dpm
 <iframe src="Assets/uni_dpm.html" width=800 height=600 frameBorder=0></iframe>
@@ -67,8 +79,12 @@ teams' deaths varies even if the teams get the same number of kills.
 
 
 The last analysis we are interested in is the average number of deaths on blue side and red side in different leagues.
-**stat**
-By looking at the average number of deaths on both sides across all of the leagues, I can see that the red side tends to have a larger average number of deaths compared to the blue side. This is not surprising. In each competition, every team gets to choose whether they want the blue side or the red side. The majority of the time, teams choose the blue side due to geographic advantages, which explains why the blue side has fewer average deaths compared to the red side across the leagues.
+`print(table[['AC', 'AL', 'CT', 'EM', 'PRMP','WLDs']].head().to_markdown(index=False))`
+|      AC |      AL |      CT |      EM |    PRMP |    WLDs |
+|--------:|--------:|--------:|--------:|--------:|--------:|
+| 14.5714 | 15.9804 | 17.359  | 15.2281 | 20.0075 | 12.5379 |
+| 14.6286 | 16.8039 | 18.9231 | 16.7444 | 19.4851 | 14.5833 |
+The first row is stat for blue side, the second row is stat for red side. By looking at the average number of deaths on both sides across all of the leagues, I can see that the red side tends to have a larger average number of deaths compared to the blue side. This is not surprising. In each competition, every team gets to choose whether they want the blue side or the red side. The majority of the time, teams choose the blue side due to geographic advantages, which explains why the blue side has fewer average deaths compared to the red side across the leagues.
 
 
 ## Assessment of Missingness
@@ -86,7 +102,7 @@ the value in league column is either LPL, LDL, MSI, Dcup, or WLDs. That tell us 
 Keep moving on with missingness, we want to see if missing values in damageitigatedperminute is dependent on other 
 columns, let's use **death** columns. 
 
-<iframe src="Assets/missing.html" width=800 height=600 frameBorder=0></iframe>
+<iframe src="Assets/miss_damage.html" width=800 height=600 frameBorder=0></iframe>
 Looking at the distribution of damageitigatedperminute not missing data seems to roughly skewed to the right,
 while the distribution of damageitigatedperminute is missing data seems rougly normal.
 
