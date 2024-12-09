@@ -1,9 +1,19 @@
 # General-League
-project for DSC 80 at UCSD
 
 
+## Introduction
 
-12312312
-123
-123123
+## Data Cleaning and Exploratory Data Analysis
+
+## Assessment of Missingness
+
+## Hypothesis Testing
+
+## Framing a Prediction Problem
+
+## Baseline Model
+
+## Final Model
+
+## Fairness Analysis
 
