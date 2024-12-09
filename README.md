@@ -84,6 +84,8 @@ The last analysis we are interested in is the average number of deaths on blue s
 |--------:|--------:|--------:|--------:|--------:|--------:|
 | 14.5714 | 15.9804 | 17.359  | 15.2281 | 20.0075 | 12.5379 |
 | 14.6286 | 16.8039 | 18.9231 | 16.7444 | 19.4851 | 14.5833 |
+
+
 The first row is stat for blue side, the second row is stat for red side. By looking at the average number of deaths on both sides across all of the leagues, I can see that the red side tends to have a larger average number of deaths compared to the blue side. This is not surprising. In each competition, every team gets to choose whether they want the blue side or the red side. The majority of the time, teams choose the blue side due to geographic advantages, which explains why the blue side has fewer average deaths compared to the red side across the leagues.
 
 
